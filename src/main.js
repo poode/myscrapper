@@ -1,4 +1,5 @@
 const Apify = require('apify');
+const { sourceList } = require('../data');
 const {
     extractDetail,
     listPageFunction
@@ -57,7 +58,7 @@ Apify.main(async () => {
         }
     }
     requestList = new Apify.RequestList({
-        sources
+        sources: sourceList,
     });
     console.table(sources);
     await requestList.initialize();
