@@ -1,0 +1,56 @@
+{
+    "title": "Trivago Crawler input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "cityIds": {
+            "title": "IDs of Cities",
+            "type": "string",
+            "description": "City ID on traivago.com max number is 84998",
+            "prefill": "84998",
+            "editor": "textfield"
+        },
+        "destType": {
+            "title": "Destination type",
+            "type": "string",
+            "description": "Type of the destination",
+            "default": "city",
+            "enum": [
+                "city",
+                "region"
+            ],
+            "enumTitles": [
+                "City",
+                "Region"
+            ]
+        },
+        "startUrl": {
+            "title": "Start URL",
+            "type": "string",
+            "description": "URL to start with instead of search query",
+            "editor": "requestListSources",
+            "prefill": "https://ar.trivago.com/en"
+        },
+        "maxPages": {
+            "title": "Maximum pagination pages",
+            "type": "integer",
+            "description": "Number of pagination pages to be crawled",
+            "default": 1,
+            "maximum": 5
+        },
+        "proxyConfig": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "Optionally use Apify Proxy",
+            "default": { "useApifyProxy": true },
+            "editor": "proxy"
+        },
+        "simple": {
+            "title": "Extract hotel list pages only (no detail)",
+            "type": "boolean",
+            "description": "The crawler will get only the data available on the list page and not go to the hotel detail page.",
+            "default": true
+        }
+    },
+    "required": []
+}
