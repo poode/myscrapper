@@ -14,7 +14,7 @@
             "title": "Start URL",
             "type": "string",
             "description": "URL to start with instead of search query",
-            "editor": "requestListSources",
+            "editor": "textfield",
             "prefill": "https://ar.trivago.com/en"
         },
         "destType": {
