@@ -1,6 +1,14 @@
 const Apify = require('apify');
-const { extractDetail, listPageFunction } = require('./extraction.js');
-const { getAttribute, enqueueLinks, addUrlParameters, getWorkingBrowser } = require('./util.js');
+const {
+    extractDetail,
+    listPageFunction
+} = require('./extraction.js');
+const {
+    getAttribute,
+    enqueueLinks,
+    addUrlParameters,
+    getWorkingBrowser
+} = require('./util.js');
 
 /** Main function */
 Apify.main(async () => {
@@ -8,11 +16,15 @@ Apify.main(async () => {
     const input = await Apify.getValue('INPUT');
 
     // Actor STATE variable
-    const state = await Apify.getValue('STATE') || { crawled: {} };
+    const state = await Apify.getValue('STATE') || {
+        crawled: {}
+    };
 
     // Migrating flag
     let migrating = false;
-    Apify.events.on('migrating', () => { migrating = true; });
+    Apify.events.on('migrating', () => {
+        migrating = true;
+    });
 
     if (!(input.proxyConfig && input.proxyConfig.useApifyProxy)) {
         throw new Error('This actor cannot be used without Apify proxy.');
@@ -25,24 +37,29 @@ Apify.main(async () => {
     let requestList;
     let sources = [];
 
-        // Create startURL based on provided INPUT.
-        startUrl = input.startUrl;
+    // Create startURL based on provided INPUT.
+    startUrl = input.startUrl;
 
-        // Enqueue all pagination pages.
-        startUrl += '?cpt2=1%2F200';
-        startUrl += '&offset=0';
-        console.log(`startUrl: ${startUrl}`);
-        await requestQueue.addRequest(new Apify.Request({url: startUrl}));
-        if(input.maxPages){
-            for (let i = 1; i <= 84998; i++) {
-                for(let j = 0; j <= 4; j++) {
-                    const url = `${input.startUrl}?cpt2=${i}%2F200&offset=${j}`;
-                    sources.push({ url, method: 'GET'})
-                }
-            }
-            requestList = new Apify.RequestList({ sources });
-            await requestList.initialize();
+    // Enqueue all pagination pages.
+    startUrl += '?cpt2=1%2F200';
+    startUrl += '&offset=0';
+    console.log(`startUrl: ${startUrl}`);
+    await requestQueue.addRequest(new Apify.Request({
+        url: startUrl
+    }));
+    for (let i = 1; i <= 84998; i++) {
+        for (let j = 0; j <= 4; j++) {
+            const url = `${input.startUrl}?cpt2=${i}%2F200&offset=${j}`;
+            sources.push({
+                url,
+                method: 'GET'
+            })
         }
+    }
+    requestList = new Apify.RequestList({
+        sources
+    });
+    await requestList.initialize();
 
     // Simulated browser chache
     const cache = {};
@@ -62,7 +79,11 @@ Apify.main(async () => {
         },
 
         // Main page handling function.
-        handlePageFunction: async ({ page, request, puppeteerPool }) => {
+        handlePageFunction: async ({
+            page,
+            request,
+            puppeteerPool
+        }) => {
             console.log(`open url: ${await page.url()}`);
 
             /** Tells the crawler to re-enqueue current page and destroy the browser.
@@ -84,28 +105,32 @@ Apify.main(async () => {
                     return;
                 }
             }
-            ////////// <<<<<<<<<<<<<>>>>>>>>>>>////////////////////////
-                if (input.simple) { // If simple output is enough, extract the data.
-                    console.log('extracting data...');
-                    await Apify.utils.puppeteer.injectJQuery(page);
-                    const result = await page.evaluate(listPageFunction, input);
-                    if (result.length > 0) {
-                        const toBeAdded = [];
-                        for (const item of result) {
-                            if (!state.crawled[item.name]) {
-                                toBeAdded.push(item);
-                                state.crawled[item.name] = true;
-                            }
-                        }
-                        if (migrating) { await Apify.setValue('STATE', state); }
-                        if (toBeAdded.length > 0) { await Apify.pushData(toBeAdded); }
+            console.log('extracting data...');
+            await Apify.utils.puppeteer.injectJQuery(page);
+            const result = await page.evaluate(listPageFunction, input);
+            if (result.length > 0) {
+                const toBeAdded = [];
+                for (const item of result) {
+                    if (!state.crawled[item.name]) {
+                        toBeAdded.push(item);
+                        state.crawled[item.name] = true;
                     }
                 }
+                if (migrating) {
+                    await Apify.setValue('STATE', state);
+                }
+                if (toBeAdded.length > 0) {
+                    await Apify.pushData(toBeAdded);
+                }
+            }
+
 
         },
 
         // Failed request handling
-        handleFailedRequestFunction: async ({ request }) => {
+        handleFailedRequestFunction: async ({
+            request
+        }) => {
             await Apify.pushData({
                 url: request.url,
                 succeeded: false,
@@ -114,7 +139,10 @@ Apify.main(async () => {
         },
 
         // Function for ignoring all unnecessary requests.
-        gotoFunction: async ({ page, request }) => {
+        gotoFunction: async ({
+            page,
+            request
+        }) => {
             await page.setRequestInterception(true);
 
             page.on('request', async (nRequest) => {
@@ -170,7 +198,9 @@ Apify.main(async () => {
                 width: 1024 + Math.floor(Math.random() * 100),
                 height: 768 + Math.floor(Math.random() * 100)
             });
-            return page.goto(request.url, { timeout: 200000 });
+            return page.goto(request.url, {
+                timeout: 200000
+            });
         },
     });
 
