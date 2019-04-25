@@ -52,7 +52,7 @@ Apify.main(async () => {
     requestList = new Apify.RequestList({
         sources: sourceList,
     });
-    console.table(sourceList);
+    // console.table(sourceList);
     await requestList.initialize();
 
     // Simulated browser chache
