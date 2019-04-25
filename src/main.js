@@ -138,11 +138,11 @@ Apify.main(async () => {
 
             page.on('request', async (nRequest) => {
                 const url = nRequest.url();
-                if (url.includes('.js')) nRequest.abort();
+                // if (url.includes('.js')) nRequest.abort();
                 // else if (url.includes('.png')) nRequest.abort();
                 // else if (url.includes('.jpg')) nRequest.abort();
                 // else if (url.includes('.gif')) nRequest.abort();
-                else if (url.includes('.css')) nRequest.abort();
+                if (url.includes('.css')) nRequest.abort();
                 else if (url.includes('static/fonts')) nRequest.abort();
                 else if (url.includes('js_tracking')) nRequest.abort();
                 else if (url.includes('facebook.com')) nRequest.abort();
