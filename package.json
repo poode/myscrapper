@@ -1,5 +1,5 @@
 {
-	"name": "booking-hotels",
+	"name": "trivago-scrapper",
 	"version": "1.0.0",
 	"description": "Crawl a number of web pages using headless Chrome and Puppeteer",
 	"main": "src/main.js",
