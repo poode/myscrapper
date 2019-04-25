@@ -59,6 +59,7 @@ Apify.main(async () => {
     requestList = new Apify.RequestList({
         sources
     });
+    console.table(sources);
     await requestList.initialize();
 
     // Simulated browser chache
@@ -88,23 +89,23 @@ Apify.main(async () => {
 
             /** Tells the crawler to re-enqueue current page and destroy the browser.
              *  Necessary if the page was open through a not working proxy. */
-            const retireBrowser = async () => {
-                // console.log('proxy invalid, re-enqueuing...');
-                await puppeteerPool.retire(page.browser());
-                await requestQueue.addRequest(new Apify.Request({
-                    url: request.url,
-                    uniqueKey: `${Math.random()}`,
-                }));
-            };
+            // const retireBrowser = async () => {
+            //     // console.log('proxy invalid, re-enqueuing...');
+            //     await puppeteerPool.retire(page.browser());
+            //     await requestQueue.addRequest(new Apify.Request({
+            //         url: request.url,
+            //         uniqueKey: `${Math.random()}`,
+            //     }));
+            // };
 
-            // Check if startUrl was open correctly
-            if (input.startUrl) {
-                const pageUrl = await page.url();
-                if (pageUrl.length < request.url.length) {
-                    await retireBrowser();
-                    return;
-                }
-            }
+            // // Check if startUrl was open correctly
+            // if (input.startUrl) {
+            //     const pageUrl = await page.url();
+            //     if (pageUrl.length < request.url.length) {
+            //         await retireBrowser();
+            //         return;
+            //     }
+            // }
             console.log('extracting data...');
             await Apify.utils.puppeteer.injectJQuery(page);
             const result = await page.evaluate(listPageFunction, input);
