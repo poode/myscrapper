@@ -29,14 +29,14 @@ Apify.main(async () => {
         startUrl = input.startUrl;
 
         // Enqueue all pagination pages.
-        startUrl += '?cpt2=1';
+        startUrl += '?cpt2=1/200';
         startUrl += '&offset=0';
         console.log(`startUrl: ${startUrl}`);
         await requestQueue.addRequest(new Apify.Request({url: startUrl}));
         if(input.maxPages){
             for (let i = 1; i <= 84998; i++) {
                 for(let j = 0; j <= 4; j++) {
-                    const url = `${input.startUrl}?cpt2=${i}&offset=${j}`;
+                    const url = `${input.startUrl}?cpt2=${i}/200&offset=${j}`;
                     sources.push({ url, method: 'GET'})
                 }
             }
