@@ -61,9 +61,6 @@ Apify.main(async () => {
     // Main crawler variable.
     const crawler = new Apify.PuppeteerCrawler({
         requestList,
-
-        requestQueue,
-
         // Browser instance creation.
         launchPuppeteerFunction: () => {
             if (!input.testProxy) {
