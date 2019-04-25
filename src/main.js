@@ -41,6 +41,7 @@ Apify.main(async () => {
                 }
             }
             requestList = new Apify.RequestList({ sources });
+            await requestList.initialize();
         }
 
     // Simulated browser chache
