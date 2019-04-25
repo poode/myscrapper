@@ -48,19 +48,11 @@ Apify.main(async () => {
     await requestQueue.addRequest(new Apify.Request({
         url: startUrl
     }));
-    // for (let i = 1; i <= 84998; i++) {
-    //     for (let j = 0; j <= 4; j++) {
-    //         const url = `${input.startUrl}?cpt2=${i}%2F200&offset=${j}`;
-    //         sources.push({
-    //             url,
-    //             method: 'GET'
-    //         })
-    //     }
-    // }
+
     requestList = new Apify.RequestList({
         sources: sourceList,
     });
-    // console.table(sources);
+    console.table(sourceList);
     await requestList.initialize();
 
     // Simulated browser chache
