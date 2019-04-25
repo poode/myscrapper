@@ -3,40 +3,12 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "cityIds": {
-            "title": "IDs of Cities",
-            "type": "string",
-            "description": "City ID on traivago.com max number is 84998",
-            "prefill": "84998",
-            "editor": "textfield"
-        },
         "startUrl": {
             "title": "Start URL",
             "type": "string",
             "description": "URL to start with instead of search query",
             "editor": "textfield",
             "prefill": "https://ar.trivago.com/en"
-        },
-        "destType": {
-            "title": "Destination type",
-            "type": "string",
-            "description": "Type of the destination",
-            "default": "city",
-            "enum": [
-                "city",
-                "region"
-            ],
-            "enumTitles": [
-                "City",
-                "Region"
-            ]
-        },
-        "maxPages": {
-            "title": "Maximum pagination pages",
-            "type": "integer",
-            "description": "Number of pagination pages to be crawled",
-            "default": 1,
-            "maximum": 5
         },
         "proxyConfig": {
             "title": "Proxy configuration",
