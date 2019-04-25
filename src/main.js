@@ -23,7 +23,7 @@ Apify.main(async () => {
 
     let startUrl;
     let requestList;
-    let sources;
+    let sources = [];
 
         // Create startURL based on provided INPUT.
         startUrl = input.startUrl;
@@ -37,7 +37,7 @@ Apify.main(async () => {
             for (let i = 1; i <= 84998; i++) {
                 for(let j = 0; j <= 4; j++) {
                     const url = `${input.startUrl}?cpt2=${i}&offset=${j}`;
-                    sources = [].push({ url, method: 'GET'},)
+                    sources.push({ url, method: 'GET'})
                 }
             }
             requestList = new Apify.RequestList({ sources });
